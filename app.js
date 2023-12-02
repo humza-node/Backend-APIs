@@ -7,7 +7,7 @@ const multer = require('multer');
 const mongoose = require('mongoose');
 const StudentRoutes = require('./routes/student');
 const UserRoutes = require('./routes/User');
-
+const CourseRoutes = require('./routes/course');
 
 app.use(express.json());
 
@@ -27,6 +27,7 @@ app.use((req, res, next) => {
 
 app.use(StudentRoutes);
 app.use(UserRoutes);
+app.use(CourseRoutes);
 mongoose.connect('mongodb+srv://admin:ltKn8qOm9drd5YJ2@students.vdzdpl9.mongodb.net/students?retryWrites=true&w=majority')
 .then(result =>
     {
