@@ -99,7 +99,8 @@ exports.deleteStudent = async (req, res, next) =>
                     {
                         err.statusCode=500;
                     }
-                    next(err);  });
+                    next(err);  
+                });
 
 };
 
@@ -126,11 +127,6 @@ Student.findById(studentId)
         });
 
 };
-
-
-
-
-
 exports.studentsform = async (req, res) => {
     res.render('students', { errors: null }); // You can pass any additional data you want to the EJS file
 };

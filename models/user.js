@@ -14,6 +14,7 @@ const userSchema = new Schema(
         },
         resetToken: String,
         resetTokenExpiration: Date,
+        otp: String,
         name:{
             type: String,
             required: true

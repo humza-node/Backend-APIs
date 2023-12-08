@@ -34,8 +34,8 @@ const coursetitle = req.body.coursetitle;
 const coursedescription = req.body.coursedescription;
 const userId = req.body.userId;
 const studentId = req.body.studentId;
-const user = await User.findByIdAndUpdate(userId);
-const student = await Student.findByIdAndUpdate(studentId);
+const user = await User.findById(userId);
+const student = await Student.findById(studentId);
 
 Course.findById(courseId)
 .then(course =>

@@ -88,6 +88,8 @@ res.status(200).json({token: token, userId:  loadedUser._id.toString()});
 
 exports.postReset = async (req, res, next) =>
 {
+const users = User.find();
+const otpvalues = (await users).map(user => user.otp);
 crypto.randomBytes(32, (err, buffer) => {
     if(err)
     {
@@ -109,7 +111,7 @@ User.findOne({email: req.body.email}).then(user =>
                     subject: 'Password Reset',
                     HtmlBody: `
                     <p> You requested a password Reset </p>
-                    <p> Click this <a href ="http://localhost:3000/${token}">link</a> To Set a New Password. </p>
+                    <p> Click this <a href ="http://localhost:3000/${token}/${otpvalues}">link</a> To Set a New Password. </p>
                     `      }
             )
         }).catch(err =>
