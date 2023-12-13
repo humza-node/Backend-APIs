@@ -27,7 +27,7 @@ res.status(200).json({message: "Personal Data Created", result});
 exports.getPersonalData = async (req, res, next) =>
 {
 const results = await Personal.find();
-res.status(200).json({message: "Fetch Personal Data", results});
+res.status(200).json({message: "Fetch Personal Data",  results});
 };
 exports.personalUpdate = async (req, res, next) =>
 {
@@ -99,4 +99,14 @@ return Personal.findByIdAndDelete(personalId);
                 }
                 next(err);
                 });
+};
+exports.getForm = async(req, res, next) =>
+{
+    const data = await Personal.find();
+    res.render('user', {data});
+};
+exports.getDataAdd = async(req, res, next) =>
+{
+    const info = await User.find();
+    res.render('add-user', {info});
 };

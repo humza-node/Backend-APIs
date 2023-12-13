@@ -7,8 +7,8 @@ exports.getAddCourse = async (req, res, next) =>
     const coursedescription = req.body.coursedescription;
     const userId = req.body.userId;
     const studentId = req.body.studentId;
-   const user = await User.findById(userId);
-   const student = await Student.findById(studentId);
+    const user = await User.findById(userId);
+    const student = await Student.findById(studentId);
     const course = new Course(
         {
             coursetitle: coursetitle,
@@ -19,8 +19,7 @@ exports.getAddCourse = async (req, res, next) =>
     );
     const courses = await course.save();
     res.status(201).json({message: "Course Created SuccessFully", courses});
-
-}
+};
 exports.getCourses = async (req, res, next) =>
 {
 const courses = await Course.find();

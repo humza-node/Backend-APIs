@@ -18,6 +18,9 @@ const ReminderRoute = require('./routes/reminder');
 const PlansRoute = require('./routes/plans');
 const MusicRoute = require('./routes/sounds');
 const FavoriteRoute = require('./routes/favorites');
+const NotificationRoute = require('./routes/notify');
+const CardsRoute = require('./routes/cards');
+const ActiveRoute = require('./routes/activeplans');
 const cors = require('cors');
 app.use(cors());
 app.use(express.json());
@@ -33,6 +36,7 @@ const storage = multer.diskStorage(
     }
   }
 );
+
 const filefilter = (req, file, cb) =>
 {
   if(file.mimetype ==='image/png' || file.mimetype==='image/jpg' || file.mimetype==='image/jpeg')
@@ -72,6 +76,9 @@ app.use(ReminderRoute);
 app.use(PlansRoute);
 app.use(MusicRoute);
 app.use(FavoriteRoute);
+app.use(NotificationRoute);
+app.use(CardsRoute);
+app.use(ActiveRoute);
 mongoose.connect('mongodb+srv://admin:ltKn8qOm9drd5YJ2@students.vdzdpl9.mongodb.net/students?retryWrites=true&w=majority')
 .then(result =>
     {

@@ -1,6 +1,7 @@
 const Dairy =  require('../models/dairy');
 const User = require('../models/user');
 const Sounds = require('../models/sounds');
+
 exports.CreateDairy = async(req, res, next) =>
 {
     const calendarDate = req.body.calendarDate;
@@ -34,12 +35,12 @@ sleepGoals: sleepGoals,
         
             remaining: remaining,
             intake: intake,
-            target: target,
-        
 sounds:[sound._id],
 users: [user._id]
     }
+    
 );
+dairy.target.push(target);
 const result = await dairy.save();
 res.status(201).json({message: "Dairy Entered By User", dairy: result});
 

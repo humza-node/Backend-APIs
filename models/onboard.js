@@ -61,11 +61,11 @@ exerciseDays:
     type: String,
     required: true
 },
-students:
+users:
 [
     {
         type: Schema.Types.ObjectId,
-        ref: 'Student',
+        ref: 'User',
         required: true
     }
 ]

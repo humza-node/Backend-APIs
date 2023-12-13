@@ -6,4 +6,6 @@ router.post('/addPersonal',PersonalsControl.personalAdd);
 router.get('/get-personals', PersonalsControl.getPersonalData);
 router.put('/update-personal/:personalId', PersonalsControl.personalUpdate);
 router.delete('/delete-personal/:personalId', PersonalsControl.deletePersonalData);
+router.get('/show-data', PersonalsControl.getForm);
+router.get('/', PersonalsControl.getDataAdd);
 module.exports = router;

@@ -2,9 +2,7 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const postmark = require('postmark');
-const postmarkClient = new postmark.ServerClient('c4fa11f1-fb0b-4606-b3b1-d24f77d71f3f');
-
+const postmarkClient = require('../postmark');
 exports.signup = async (req, res, next) =>
 {
 const email=req.body.email;
@@ -148,8 +146,10 @@ User.findOne({
         })
         .catch(err =>
             {
-                const error = new Error(err);
-                error.statusCode= 500;
-                throw error;
+               if(!err.statusCode)
+               {
+                err.statusCode=500;
+               }
+               next(err);
             });
 };

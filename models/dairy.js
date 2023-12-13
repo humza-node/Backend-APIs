@@ -52,11 +52,11 @@ reminders: {type: String},
         type: String,
         required: false
     },
-    target:
+    target:[
     {
         type: Number,
         required: false
-    },
+    }],
 
 sounds:[
 {

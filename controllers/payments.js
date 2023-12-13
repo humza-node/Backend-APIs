@@ -1,4 +1,6 @@
 const Payment = require('../models/Payments');
+const User = require('../models/user');
+const Plan = require('../models/plans');
 const RazorPay = require('razorpay');
 const razorpay = new RazorPay({
     key_id: 'rzp_test_G7ejft0CS9SFtD',
@@ -15,7 +17,10 @@ exports.PostOrder = async (req, res, next) =>
 {
     const amount = req.body.amount;
     const currency = req.body.currency;
-   
+    const userId = req.body.userId;
+    const planId = req.body.planId;
+   const user = await User.findById(userId);
+   const plan = await Plan.findById(planId);
     try
     {
      
@@ -29,7 +34,9 @@ exports.PostOrder = async (req, res, next) =>
             amount,
             currency,
             razorpay_order_id: order.id,
-            status: "created"
+            status: "created",
+            users: [user._id],
+            plans: [plan._id]
         });
         await payment.save();
         res.json({success: true, order});
@@ -43,8 +50,9 @@ exports.PostOrder = async (req, res, next) =>
 };
 exports.getSucess = async(req, res, next) =>
 {
+  const razor_order = req.params.orderId;
     const {razorpay_payment_id} = generateRandomString(20);
-    const {razorpay_order_id } = generateRandomString(20);
+    const razorpay_order_id  = await Payment.findOne({razor_order});
 
   try {
     // Update payment status and payment ID in MongoDB
@@ -62,4 +70,9 @@ exports.getSucess = async(req, res, next) =>
     res.status(500).json({ error: 'Failed to update payment status' });
   }
 
+};
+exports.getPayments = async(req, res, next) =>
+{
+  const pays = await Payment.find();
+  res.status(200).json({message: "Payments Fetched", pays});
 };

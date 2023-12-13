@@ -1,5 +1,5 @@
 const Question = require('../models/onboard');
-const Student = require('../models/students');
+const User = require('../models/user');
 exports.getAdd = async (req, res, next) =>
 {
 const firstname = req.body.firstname;
@@ -14,8 +14,8 @@ const exerciseEquipments = req.body.exerciseEquipments;
 const dietaryRequirements = req.body.dietaryRequirements;
 const dieseases = req.body.dieseases;
 const exerciseDays = req.body.exerciseDays;
-const studentId = req.body.studentId;
-const student = await Student.findById(studentId);
+const userId = req.body.userId;
+const user = await User.findById(userId);
 const questions = new Question({
     firstname: firstname,
     lastname: lastname,
@@ -29,16 +29,14 @@ const questions = new Question({
     dietaryRequirements: dietaryRequirements,
     dieseases: dieseases,
     exerciseDays: exerciseDays,
-students: [student._id]
+users: [user._id],
 });
 const result = await questions.save();
 res.status(201).json({
     message: "Questions Submitted",
     questions: result
 });
-
 };
-
 exports.getQuestions = async(req, res, next) =>
 {
 const Questions =await Question.find();
@@ -46,8 +44,8 @@ res.status(200).json({message: "Fetch Question And Questions", Questions});
 };
 exports.updateQuestion = async(req, res, next) =>
 {
-    const questionId = req.params.questionId;
-    const firstname = req.body.firstname;
+const questionId = req.params.questionId;
+const firstname = req.body.firstname;
 const lastname = req.body.lastname;
 const gender = req.body.gender;
 const age = req.body.age;
@@ -59,8 +57,8 @@ const exerciseEquipments = req.body.exerciseEquipments;
 const dietaryRequirements = req.body.dietaryRequirements;
 const dieseases = req.body.dieseases;
 const exerciseDays = req.body.exerciseDays;
-const studentId = req.body.studentId;
-const student = await Student.findById(studentId);
+const userId = req.body.userId;
+const user = await User.findById(userId);
 Question.findById(questionId)
 .then(question =>
     {
@@ -82,7 +80,7 @@ Question.findById(questionId)
         question.dietaryRequirements = dietaryRequirements;
         question.dieseases = dieseases;
         question.exerciseDays = exerciseDays;
-        question.students = [student._id]
+        question.users = [user._id]
         return question.save();
     }).then(result =>
         {

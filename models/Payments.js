@@ -22,7 +22,21 @@ const paymentSchema = new Schema(
             type: String,
             required: false
         },
-        status: String
+        status: String,
+        users:[
+            {
+                type: Schema.Types.ObjectId,
+                required: true,
+                ref: 'User'
+            }
+        ],
+        plans:[
+            {
+                type: Schema.Types.ObjectId,
+                required: true,
+                ref: 'Plans'
+            }
+        ]
     }
 );
 module.exports=mongoose.model("Payment", paymentSchema);

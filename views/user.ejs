@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Users</title>
+</head>
+<center>
+<body>
+    <h1> Personal Data</h1>
+    <% for (let person of data) { %>
+      
+<table border="1">
+    <th>Image Url</th>
+    <th>FirstName</th>
+    <th>LastName</th>
+    <th>Date of Birth</th>
+    <th>Weight</th>
+    <th>Height</th>
+    <tr>
+        <td>
+            <img width="70" height="50" src="<%= person.imageUrl %>">
+        </td>
+        <td>
+            <%= person.firstname %>
+        </td>
+        <td>
+            <%= person.lastname %>
+        </td>
+        <td>
+            <%= person.dateofbirth %>
+        </td>
+        <td>
+            <%= person.weight %>
+        </td>
+        <td>
+            <%= person.height %>
+        </td>
+    </tr>
+</table>
+<hr>
+
+    <% } %>
+</body>
+</center>
+</html>

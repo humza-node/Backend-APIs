@@ -16,17 +16,11 @@ exports.addReminder = async(req, res, next) =>
         
             set_time: set_time,
             repeatDays: repeatDays,
-        
-        
-    
             start_time: start_time,
             end_time: end_time,
             Interval: Interval,
-    
-
     Sleep_set_time: Sleep_set_time,
     Sleep_repeatDays: Sleep_repeatDays,
-
 users: [user._id]
     });
     const result = await reminder.save();
@@ -37,7 +31,6 @@ exports.getReminders = async(req, res, next) =>
     const results = await Reminder.find();
     res.status(200).json({message: "Fetched Reminders", results});
 };
-
 exports.updateReminders = async (req, res, next) =>
 {
   const reminderId = req.params.reminderId;
