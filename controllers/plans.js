@@ -101,3 +101,37 @@ exports.deletePlans = async(req, res, next) =>
                 });
 
 };
+exports.postPlan = async(req, res, next) =>
+{
+    const planId = req.body.planId;
+    const userId = req.body.userId;
+    const user = await User.findById(userId);
+    const plans = await Plans.findById(planId);
+    const results = await user.addToPlans(plans);
+    res.status(200).json({message: "Added Plans", results});
+};
+exports.deletePlans = async (req, res, next) => {
+    try {
+      const planId = req.body.planId;
+      const userId = req.body.userId;
+  
+      const user = await User.findById(userId);
+      const plan = await Plans.findById(planId);
+  
+      if (!user || !plan) {
+        return res.status(404).json({ error: 'User or Plan not found' });
+      }
+  
+      user.removeFromPlans(planId).then((updatedUser) => {
+        console.log('Removed Plan');
+        console.log(updatedUser);
+        res.status(200).json({ message: 'Plan removed successfully' });
+      }).catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
