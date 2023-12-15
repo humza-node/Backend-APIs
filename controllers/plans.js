@@ -8,17 +8,16 @@ exports.getAddPlans = async (req, res, next) =>
     const planDuration = req.body.planDuration;
     const WeeklyDays = req.body.WeeklyDays;
     const WeeklyGoals = req.body.WeeklyGoals;
-    const planImageUrl = req.file.path.replace("\\","/");
-    const userId = req.body.userId;
-    const user = await User.findById(userId);
+    const image = req.file.path.replace("\\","/");
+  
     const plans = new Plans({
         planName: planName,
         planDescription: planDescription,
         planDuration: planDuration,
         WeeklyDays: WeeklyDays,
         WeeklyGoals: WeeklyGoals,
-        planImageUrl: planImageUrl,
-        users: [user._id]
+        planImageUrl: image
+ 
     });
     const result = await plans.save();
     res.status(200).json({message: "Plans Added", result});
@@ -38,8 +37,6 @@ exports.getPlansUpdate = async(req, res, next) =>
     const WeeklyDays = req.body.WeeklyDays;
     const WeeklyGoals = req.body.WeeklyGoals;
     const image = req.file.path.replace("\\","/");
-    const userId = req.body.userId;
-    const user = await User.findById(userId);
     Plans.findById(planId).then(plan => 
         {
             if(!plan)
@@ -53,7 +50,6 @@ exports.getPlansUpdate = async(req, res, next) =>
             plan.planDuration=planDuration;
             plan.WeeklyDays=WeeklyDays;
             plan.WeeklyGoals=WeeklyGoals;
-            plan.users = [user._id];
             if(image)
             {
                 filehelper.deletefile(plan.planImageUrl);
@@ -110,7 +106,7 @@ exports.postPlan = async(req, res, next) =>
     const results = await user.addToPlans(plans);
     res.status(200).json({message: "Added Plans", results});
 };
-exports.deletePlans = async (req, res, next) => {
+exports.deletePlansCart = async (req, res, next) => {
     try {
       const planId = req.body.planId;
       const userId = req.body.userId;

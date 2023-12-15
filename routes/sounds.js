@@ -4,5 +4,5 @@ const router = express.Router();
 router.post('/add-music', SoundControl.getAddMusic);
 router.get('/get-Music', SoundControl.getMusic);
 router.put('/get-updates/:soundId', SoundControl.UpdateMusic);
-router.delete('/get-deletes', SoundControl.DeleteMusic);
+router.delete('/get-deletes/:soundId', SoundControl.DeleteMusic);
 module.exports=router;

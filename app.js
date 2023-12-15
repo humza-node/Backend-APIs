@@ -6,9 +6,9 @@ const { v4: uuidv4 } = require('uuid');
 const multer = require('multer');
 const User = require('./models/user');
 const mongoose = require('mongoose');
-const StudentRoutes = require('./routes/student');
+
 const UserRoutes = require('./routes/User');
-const CourseRoutes = require('./routes/course');
+
 const OtpRoutes = require('./routes/otp');
 const QuestionRouter = require('./routes/questions');
 const PaymentRoute = require('./routes/payment');
@@ -24,6 +24,8 @@ const CardsRoute = require('./routes/cards');
 const session = require('express-session');
 const MongoDbStore = require('connect-mongodb-session')(session);
 const ActiveRoute = require('./routes/activeplans');
+const workouts = require('./routes/workouts');
+const trainRoute = require('./routes/trainer');
 const cors = require('cors');
 app.use(cors());
 app.use(express.json());
@@ -32,14 +34,7 @@ const store = new MongoDbStore({
 uri: MONGODB_URI,
 collection: 'sessions',
 });
-app.use(session({
-  secret: 'my secret',
-  resave: false,
-  saveUninitialized: false,
-  store: store,
-}));
-const csrf = require('csurf');
-const csrfProtection = csrf();
+
 const storage = multer.diskStorage(
   {
     destination: function(req, file, cb)
@@ -64,7 +59,6 @@ const filefilter = (req, file, cb) =>
     cb(null, false);
   }
 };
-app.use(csrfProtection);
 app.use(multer({storage: storage, fileFilter: filefilter}).single('image'));
 app.use('/images', express.static(path.join(__dirname,'images')));
 
@@ -79,40 +73,9 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
   });
-app.use((req, res, next)=>
-{
-  res.locals.isAuthenticated = req.session.isLoggedIn;
-  res.locals.csrfToken =  req.csrfToken();
-  next();
-});
-app.use((req, res, next) =>
-{
- if(!req.session.user)
- {
-  return next();
- }
-User.findById(req.session.user._id)
-.then(user =>{
-if(!user)
-{
-  return next();
-}
-req.user = user;
-next();
-}).catch(err =>
-  {
-    console.log(err);
-  });
-
-
-});
-
-
 
 app.use(bodyParser.json());
-app.use(StudentRoutes);
 app.use(UserRoutes);
-app.use(CourseRoutes);
 app.use(OtpRoutes);
 app.use(QuestionRouter);
 app.use(PaymentRoute);
@@ -126,7 +89,9 @@ app.use(FavoriteRoute);
 app.use(NotificationRoute);
 app.use(CardsRoute);
 app.use(ActiveRoute);
-mongoose.connect(MONGODB_URI)
+app.use(workouts);
+app.use(trainRoute);
+mongoose.connect("mongodb+srv://admin:ltKn8qOm9drd5YJ2@students.vdzdpl9.mongodb.net/students?retryWrites=true&w=majority")
 .then(result =>
     {
         app.listen(process.env.PORT || 3000);
