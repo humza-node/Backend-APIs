@@ -4,7 +4,7 @@ const path = require('path');
 const app = express();
 const { v4: uuidv4 } = require('uuid'); 
 const multer = require('multer');
-const User = require('./models/user');
+
 const mongoose = require('mongoose');
 
 const UserRoutes = require('./routes/User');
@@ -21,19 +21,13 @@ const MusicRoute = require('./routes/sounds');
 const FavoriteRoute = require('./routes/favorites');
 const NotificationRoute = require('./routes/notify');
 const CardsRoute = require('./routes/cards');
-const session = require('express-session');
-const MongoDbStore = require('connect-mongodb-session')(session);
+const ReviewRoute = require('./routes/review');
 const ActiveRoute = require('./routes/activeplans');
 const workouts = require('./routes/workouts');
 const trainRoute = require('./routes/trainer');
 const cors = require('cors');
 app.use(cors());
 app.use(express.json());
-const MONGODB_URI=`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@students.vdzdpl9.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}`;
-const store = new MongoDbStore({
-uri: MONGODB_URI,
-collection: 'sessions',
-});
 
 const storage = multer.diskStorage(
   {
@@ -64,13 +58,11 @@ app.use('/images', express.static(path.join(__dirname,'images')));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-      'Access-Control-Allow-Methods',
-      'OPTIONS, GET, POST, PUT, PATCH, DELETE'
-    );
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods','OPTIONS, GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
   });
 
@@ -91,6 +83,7 @@ app.use(CardsRoute);
 app.use(ActiveRoute);
 app.use(workouts);
 app.use(trainRoute);
+app.use(ReviewRoute);
 mongoose.connect("mongodb+srv://admin:ltKn8qOm9drd5YJ2@students.vdzdpl9.mongodb.net/students?retryWrites=true&w=majority")
 .then(result =>
     {
