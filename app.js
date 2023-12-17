@@ -89,7 +89,7 @@ app.use(ReviewRoute);
 mongoose.connect("mongodb+srv://admin:ltKn8qOm9drd5YJ2@students.vdzdpl9.mongodb.net/students?retryWrites=true&w=majority")
 .then(result =>
     {
-        app.listen(process.env.PORT || 3000);
+        app.listen(3000);
     })
     .catch(err=>
  console.log(err));
