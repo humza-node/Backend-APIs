@@ -15,7 +15,6 @@ const diarySchema = new Schema(
         required: false
     },
 reminders: {type: String},
-
     deepSleep:
     {
         type: Date, 

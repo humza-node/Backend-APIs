@@ -25,6 +25,7 @@ const ReviewRoute = require('./routes/review');
 const ActiveRoute = require('./routes/activeplans');
 const workouts = require('./routes/workouts');
 const trainRoute = require('./routes/trainer');
+const baseUrl = 'https://ultramarine-colt-wrap.cyclic.app';
 const cors = require('cors');
 app.use(cors());
 app.use(express.json());
@@ -58,12 +59,12 @@ app.use('/images', express.static(path.join(__dirname,'images')));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
 app.use((req, res, next) => {
-  res.setHeader('Content-Type', 'image/jpeg'); // Adjust based on the image type
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods','OPTIONS, GET, POST, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader(
+'Access-Control-Allow-Methods','OPTIONS, GET, POST, PUT, PATCH, DELETE'
+    );
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
   });
 
@@ -91,4 +92,4 @@ mongoose.connect("mongodb+srv://admin:ltKn8qOm9drd5YJ2@students.vdzdpl9.mongodb.
         app.listen(process.env.PORT || 3000);
     })
     .catch(err=>
-     console.log(err));
+ console.log(err));
