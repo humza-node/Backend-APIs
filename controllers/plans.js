@@ -1,38 +1,25 @@
 const Plans=require('../models/plans');
 const User = require('../models/user');
 const filehelper = require('../util/file');
-exports.getAddPlans = async (req, res, next) => {
-    try {
-      const planName = req.body.planName;
-      const planDescription = req.body.planDescription;
-      const planDuration = req.body.planDuration;
-      const WeeklyDays = req.body.WeeklyDays;
-      const WeeklyGoals = req.body.WeeklyGoals;
-  
-      // Use req.file.buffer instead of req.file.path for memory storage
-      const planImageBuffer = req.file.buffer;
-  
-      // Process the file buffer as needed
-      // For example, you can convert it to a base64 string
-      const planImageBase64 = planImageBuffer.toString('base64');
-  
-      const plans = new Plans({
+exports.getAddPlans = async (req, res, next) =>
+{
+    const planName = req.body.planName;
+    const planDescription = req.body.planDescription;
+    const planDuration = req.body.planDuration;
+    const WeeklyDays = req.body.WeeklyDays;
+    const WeeklyGoals = req.body.WeeklyGoals;
+    const planImageUrl = req.file.path.replace("\\","/");
+    const plans = new Plans({
         planName: planName,
         planDescription: planDescription,
         planDuration: planDuration,
         WeeklyDays: WeeklyDays,
         WeeklyGoals: WeeklyGoals,
-        planImageUrl: planImageBase64, // Assuming you want to store base64 representation
-      });
-  
-      const result = await plans.save();
-      res.status(200).json({ message: 'Plans Added', result });
-    } catch (error) {
-      console.error('Error adding plans:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
-    }
-  };
-  
+        planImageUrl: planImageUrl
+    });
+    const result = await plans.save();
+    res.status(200).json({message: "Plans Added", result});
+};
 exports.getPlans = async(req, res, next) =>
 {
     const results = await Plans.find();
