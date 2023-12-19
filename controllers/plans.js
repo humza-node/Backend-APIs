@@ -38,6 +38,8 @@ exports.getPlansUpdate = async(req, res, next) =>
     const WeeklyDays = req.body.WeeklyDays;
     const WeeklyGoals = req.body.WeeklyGoals;
     const image = req.file.path.replace("\\","/");
+    const baseUrl = 'https://ultramarine-colt-wrap.cyclic.app';
+    const absoluteImageUrl = `${baseUrl}/${image}`;
     Plans.findById(planId).then(plan => 
         {
             if(!plan)
@@ -54,7 +56,7 @@ exports.getPlansUpdate = async(req, res, next) =>
             if(image)
             {
                 filehelper.deletefile(plan.planImageUrl);
-                plan.planImageUrl = image;
+                plan.planImageUrl = absoluteImageUrl;
             }
             return plan.save();
         }).then(result =>

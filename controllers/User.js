@@ -74,8 +74,6 @@ const token = jwt.sign({
     expiresIn: '1h'
 }
 );
-req.session.isLoggedIn = true;
-req.session.user = user;
 res.status(200).json({token: token, userId:  loadedUser._id.toString()});
             }).catch(err =>
                 {
