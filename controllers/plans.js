@@ -9,15 +9,13 @@ exports.getAddPlans = async (req, res, next) =>
     const WeeklyDays = req.body.WeeklyDays;
     const WeeklyGoals = req.body.WeeklyGoals;
     const image = req.file.path.replace("\\","/");
-    const baseUrl = 'https://ultramarine-colt-wrap.cyclic.app';
-    const absoluteImageUrl = `${baseUrl}/${image}`;
     const plans = new Plans({
         planName: planName,
         planDescription: planDescription,
         planDuration: planDuration,
         WeeklyDays: WeeklyDays,
         WeeklyGoals: WeeklyGoals,
-        planImageUrl: absoluteImageUrl
+        planImageUrl: image
  
     });
     const result = await plans.save();
