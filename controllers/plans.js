@@ -17,7 +17,7 @@ exports.getAddPlans = async (req, res, next) =>
         planDuration: planDuration,
         WeeklyDays: WeeklyDays,
         WeeklyGoals: WeeklyGoals,
-        planImageUrl: image.path
+        planImageUrl: image
     });
     const result = await plans.save();
     res.status(200).json({message: "Plans Added", result});
