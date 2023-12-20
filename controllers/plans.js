@@ -9,7 +9,9 @@ exports.getAddPlans = async (req, res, next) =>
     const planDuration = req.body.planDuration;
     const WeeklyDays = req.body.WeeklyDays;
     const WeeklyGoals = req.body.WeeklyGoals;
-    const planImageUrl = req.file ? req.file.buffer.toString('base64') : null;
+    const image = req.file;
+    // Check if image is available
+    const planImageUrl = image ? image.path : null;
 
     const plans = new Plans({
         planName: planName,

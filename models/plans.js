@@ -28,7 +28,7 @@ const planSchema = new Schema (
         planImageUrl:
         {
             type: String,
-            required: true
+            required: false
         },
        
     }
