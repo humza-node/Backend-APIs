@@ -1,7 +1,8 @@
 const Plans=require('../models/plans');
 const User = require('../models/user');
 const filehelper = require('../util/file');
-
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3();
 exports.getAddPlans = async (req, res, next) =>
 {
     const planName = req.body.planName;
@@ -11,7 +12,15 @@ exports.getAddPlans = async (req, res, next) =>
     const WeeklyGoals = req.body.WeeklyGoals;
     const image = req.file;
     // Check if image is available
-    const planImageUrl = image ? image.path : null;
+    const uploadParams = {
+        Bucket: 'cyclic-ultramarine-colt-wrap-eu-central-1"',
+        Key: image.filename, 
+        Body: image.buffer, 
+        ACL: 'public-read', 
+        ContentType: image.mimetype,
+    };
+    const s3UploadResponse = await s3.upload(uploadParams).promise();
+
 
     const plans = new Plans({
         planName: planName,
@@ -19,7 +28,7 @@ exports.getAddPlans = async (req, res, next) =>
         planDuration: planDuration,
         WeeklyDays: WeeklyDays,
         WeeklyGoals: WeeklyGoals,
-        planImageUrl: planImageUrl
+        planImageUrl: s3UploadResponse.Location
     });
     const result = await plans.save();
     res.status(200).json({message: "Plans Added", result});
