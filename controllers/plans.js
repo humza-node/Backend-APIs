@@ -1,6 +1,7 @@
 const Plans=require('../models/plans');
 const User = require('../models/user');
 const filehelper = require('../util/file');
+
 exports.getAddPlans = async (req, res, next) =>
 {
     const planName = req.body.planName;
@@ -8,16 +9,15 @@ exports.getAddPlans = async (req, res, next) =>
     const planDuration = req.body.planDuration;
     const WeeklyDays = req.body.WeeklyDays;
     const WeeklyGoals = req.body.WeeklyGoals;
-    const image = req.file.path.replace("\\","/");
-    const baseUrl = 'https://ultramarine-colt-wrap.cyclic.app';
-    const absoluteImageUrl = `${baseUrl}/${image}`;
+    const image = req.file;
+
     const plans = new Plans({
         planName: planName,
         planDescription: planDescription,
         planDuration: planDuration,
         WeeklyDays: WeeklyDays,
         WeeklyGoals: WeeklyGoals,
-        planImageUrl: absoluteImageUrl
+        planImageUrl: image.path
     });
     const result = await plans.save();
     res.status(200).json({message: "Plans Added", result});
