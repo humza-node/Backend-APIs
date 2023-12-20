@@ -9,7 +9,7 @@ exports.getAddPlans = async (req, res, next) =>
     const planDuration = req.body.planDuration;
     const WeeklyDays = req.body.WeeklyDays;
     const WeeklyGoals = req.body.WeeklyGoals;
-    const image = req.file;
+    const planImageUrl = req.file ? req.file.buffer.toString('base64') : null;
 
     const plans = new Plans({
         planName: planName,
@@ -17,7 +17,7 @@ exports.getAddPlans = async (req, res, next) =>
         planDuration: planDuration,
         WeeklyDays: WeeklyDays,
         WeeklyGoals: WeeklyGoals,
-        planImageUrl: image
+        planImageUrl: planImageUrl
     });
     const result = await plans.save();
     res.status(200).json({message: "Plans Added", result});
