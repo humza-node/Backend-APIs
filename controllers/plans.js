@@ -1,8 +1,8 @@
 const Plans=require('../models/plans');
 const User = require('../models/user');
 const filehelper = require('../util/file');
-const AWS = require('aws-sdk');
-const s3 = new AWS.S3();
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const s3Client = new S3Client();
 exports.getAddPlans = async (req, res, next) =>
 {
     const planName = req.body.planName;
@@ -19,8 +19,8 @@ exports.getAddPlans = async (req, res, next) =>
         ACL: 'public-read', 
         ContentType: image.mimetype,
     };
-    const s3UploadResponse = await s3.upload(uploadParams).promise();
-
+    const command = new PutObjectCommand(uploadParams);
+    const s3UploadResponse = await s3Client.send(command);
 
     const plans = new Plans({
         planName: planName,
