@@ -9,6 +9,8 @@ exports.getAddTrainer = async(req, res, next) =>
     const trainerExperience = req.body.trainerExperience;
     const trainerRating = req.body.trainerRating;
     const image = req.file.path.replace("\\","/");
+    const baseUrl = 'https://orange-bonobo-tutu.cyclic.app';
+    const absoluteImageUrl = `${baseUrl}/${image}`;
     const workoutId = req.body.workoutId;
     const planId = req.body.planId;
     const works = await Workout.findById(workoutId);
@@ -18,7 +20,7 @@ exports.getAddTrainer = async(req, res, next) =>
         trainerDescription: trainerDescription,
         trainerExperience: trainerExperience,
         trainerRating: trainerRating,
-        trainImage: image,
+        trainImage: absoluteImageUrl,
         plans: [plan._id],
         workouts: [works._id]
     });
