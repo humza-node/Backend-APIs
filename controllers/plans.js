@@ -1,38 +1,28 @@
 const Plans=require('../models/plans');
 const User = require('../models/user');
 const filehelper = require('../util/file');
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
-const s3Client = new S3Client();
-exports.getAddPlans = async (req, res, next) =>
-{
+
+exports.getAddPlans = async (req, res, next) => {
     const planName = req.body.planName;
     const planDescription = req.body.planDescription;
     const planDuration = req.body.planDuration;
     const WeeklyDays = req.body.WeeklyDays;
     const WeeklyGoals = req.body.WeeklyGoals;
-    const image = req.file;
-    // Check if image is available
-    const uploadParams = {
-        Bucket: 'cyclic-ultramarine-colt-wrap-eu-central-1"',
-        Key: image.filename, 
-        Body: image.buffer, 
-        ACL: 'public-read', 
-        ContentType: image.mimetype,
-    };
-    const command = new PutObjectCommand(uploadParams);
-    const s3UploadResponse = await s3Client.send(command);
-
-    const plans = new Plans({
+  const image = req.file.path.replace("\\","/");
+  const baseUrl = 'https://orange-bonobo-tutu.cyclic.app';
+  const absoluteImageUrl = `${baseUrl}/${image}`;
+      const plans = new Plans({
         planName: planName,
         planDescription: planDescription,
         planDuration: planDuration,
         WeeklyDays: WeeklyDays,
         WeeklyGoals: WeeklyGoals,
-        planImageUrl: s3UploadResponse.Location
-    });
-    const result = await plans.save();
-    res.status(200).json({message: "Plans Added", result});
-};
+        planImageUrl: absoluteImageUrl
+      });
+  
+      const result = await plans.save();
+      res.status(200).json({ message: 'Plans Added', result });
+    };   
 exports.getPlans = async(req, res, next) =>
 {
     const results = await Plans.find();
@@ -47,7 +37,7 @@ exports.getPlansUpdate = async(req, res, next) =>
     const WeeklyDays = req.body.WeeklyDays;
     const WeeklyGoals = req.body.WeeklyGoals;
     const image = req.file.path.replace("\\","/");
-    const baseUrl = 'https://ultramarine-colt-wrap.cyclic.app';
+    const baseUrl = 'https://orange-bonobo-tutu.cyclic.app';
     const absoluteImageUrl = `${baseUrl}/${image}`;
     Plans.findById(planId).then(plan => 
         {
