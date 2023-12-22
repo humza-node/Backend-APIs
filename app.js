@@ -25,11 +25,13 @@ const ReviewRoute = require('./routes/review');
 const ActiveRoute = require('./routes/activeplans');
 const workouts = require('./routes/workouts');
 const trainRoute = require('./routes/trainer');
+const fileupload = require('express-fileupload');
 const baseUrl = 'https://ultramarine-colt-wrap.cyclic.app';
 const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
 const storage = multer.diskStorage(
   {
     destination: function(req, file, cb)
@@ -67,7 +69,10 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
   });
-
+app.use(fileupload({
+  useTempFiles: true,
+  tempFileDir: "/tmp",
+}));
 app.use(bodyParser.json());
 app.use(UserRoutes);
 app.use(OtpRoutes);
