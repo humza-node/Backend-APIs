@@ -133,3 +133,10 @@ exports.deletePlansCart = async (req, res, next) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
+  exports.getSinglePlan = async(req, res, next) =>
+  {
+    const planId = req.params.planId;
+    const results = await Plans.findById(planId);
+    res.status(200).json({message: "Fetch Single Plan", results});
+  };
+  

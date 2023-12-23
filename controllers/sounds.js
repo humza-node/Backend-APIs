@@ -53,6 +53,7 @@ exports.UpdateMusic = async (req, res, next) =>
           next(err);
         });
 };
+
 exports.DeleteMusic = async (req, res, next) =>
 {
   const soundId = req.params.soundId;
